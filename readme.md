@@ -102,8 +102,6 @@ To run this project locally, follow these steps:
     ```
     API_KEY="YOUR_GEMINI_API_KEY"
     ```
-    > **Note:** In the intended development environment (like Google AI Studio), this key is pre-configured and does not need to be set manually.
-
 4.  **Run the development server:**
     ```bash
     npm run dev
