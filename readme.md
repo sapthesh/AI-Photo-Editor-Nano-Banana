@@ -14,6 +14,8 @@
   </a>
   <img src="https://img.shields.io/github/repo-size/sapthesh/AI-Photo-Editor-Nano-Banana?style=for-the-badge&logo=github&color=ff69b4&logoColor=white" alt="Repo Size">
   <img src="https://img.shields.io/github/last-commit/sapthesh/AI-Photo-Editor-Nano-Banana?style=for-the-badge&logo=github&color=f4d03f&logoColor=white" alt="Last Commit">
+  <a href="https://hits.sh/github.com/sapthesh/AI-Photo-Editor-Banana/"><img alt="Hits" src="https://hits.sh/github.com/sapthesh/AI-Photo-Editor-Banana.svg?style=for-the-badge"/></a>
+  <a href="https://hits.sh/github.com/sapthesh/AI-Photo-Editor-Banana/"><img alt="Hits" src="https://hits.sh/github.com/sapthesh/AI-Photo-Editor-Banana.svg?view=today-total&style=for-the-badge&color=fe7d37"/></a>
 </div>
 
 <br>
