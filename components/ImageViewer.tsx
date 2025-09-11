@@ -1,6 +1,6 @@
 /** @copyright sapthesh */
 import React, { useRef, useEffect } from 'react';
-import { AppState, ImageState } from '../types';
+import { AppState, ImageState, FilterType } from '../types';
 import { Spinner } from './Spinner';
 import { AlertTriangleIcon } from './icons/AlertTriangleIcon';
 import { ImageIcon } from './icons/ImageIcon';
@@ -8,13 +8,14 @@ import { DownloadIcon } from './icons/DownloadIcon';
 import { CycleIcon } from './icons/CycleIcon';
 
 interface ImageViewerProps {
-  originalImage: string | null;
+  originalImage: ImageState | null;
   editedImage: ImageState | null;
   appState: AppState;
   error: string | null;
   editIntensity: number;
   onIntensityChange: (intensity: number) => void;
   onContinueEditing: () => void;
+  filter: FilterType;
 }
 
 const ImagePanel: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
@@ -40,15 +41,31 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
     error, 
     editIntensity,
     onIntensityChange,
-    onContinueEditing
+    onContinueEditing,
+    filter
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  useEffect(() => {
-    if (appState !== AppState.RESULT || !originalImage || !editedImage || !canvasRef.current) {
-      return;
+  const getCanvasFilter = (filter: FilterType): string => {
+    switch (filter) {
+      case FilterType.VINTAGE:
+        return 'sepia(0.6) contrast(0.8) brightness(1.1) saturate(1.2)';
+      case FilterType.POLAROID:
+        return 'sepia(0.4) contrast(1.2) brightness(1.1) saturate(1.3)';
+      case FilterType.BLACK_WHITE:
+        return 'grayscale(1)';
+      case FilterType.SEPIA:
+        return 'sepia(1)';
+      case FilterType.NEGATIVE:
+        return 'invert(1)';
+      default:
+        return 'none';
     }
+  };
 
+  useEffect(() => {
+    if (!originalImage || !canvasRef.current) return;
+    
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -56,54 +73,67 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
     const originalImg = new Image();
     const editedImg = new Image();
 
-    let imagesLoaded = 0;
-    const totalImages = 2;
+    let loadedImages = 0;
+    const requiredImages = editedImage ? 2 : 1;
 
-    const drawImages = () => {
-        if (imagesLoaded < totalImages) return;
+    const draw = () => {
+        if (loadedImages < requiredImages) return;
 
         const { naturalWidth: width, naturalHeight: height } = originalImg;
         canvas.width = width;
         canvas.height = height;
-
+        
         ctx.clearRect(0, 0, width, height);
+        ctx.filter = getCanvasFilter(filter);
 
-        // Draw original image
+        if (editedImage) {
+            // Draw original image
+            ctx.globalAlpha = 1.0;
+            ctx.drawImage(originalImg, 0, 0);
+
+            // Draw edited image on top with intensity alpha
+            ctx.globalAlpha = editIntensity / 100;
+            ctx.drawImage(editedImg, 0, 0, width, height);
+        } else {
+            // No edit, just draw the original with filter
+            ctx.globalAlpha = 1.0;
+            ctx.drawImage(originalImg, 0, 0);
+        }
+        
+        // Reset canvas state
         ctx.globalAlpha = 1.0;
-        ctx.drawImage(originalImg, 0, 0);
-
-        // Draw edited image on top with intensity alpha
-        ctx.globalAlpha = editIntensity / 100;
-        ctx.drawImage(editedImg, 0, 0, width, height);
-
-        // Reset alpha
-        ctx.globalAlpha = 1.0;
+        ctx.filter = 'none';
     };
-    
+
     originalImg.onload = () => {
-        imagesLoaded++;
-        drawImages();
+        loadedImages++;
+        draw();
     };
-    editedImg.onload = () => {
-        imagesLoaded++;
-        drawImages();
-    };
+    if (editedImage) {
+        editedImg.onload = () => {
+            loadedImages++;
+            draw();
+        };
+    }
+    
+    originalImg.src = originalImage.dataUrl;
+    if (editedImage) {
+        editedImg.src = editedImage.dataUrl;
+    }
 
-    originalImg.src = originalImage;
-    editedImg.src = editedImage.dataUrl;
-
-  }, [originalImage, editedImage, editIntensity, appState]);
+  }, [originalImage, editedImage, editIntensity, appState, filter]);
 
   const handleDownload = () => {
-    if (!canvasRef.current || !editedImage) return;
+    if (!canvasRef.current || !originalImage) return;
 
     try {
         const canvas = canvasRef.current;
-        const dataUrl = canvas.toDataURL(editedImage.mimeType);
+        const mimeType = (editedImage || originalImage).mimeType;
+        const dataUrl = canvas.toDataURL(mimeType);
         const a = document.createElement('a');
         a.href = dataUrl;
-        const extension = editedImage.mimeType.split('/')[1]?.split('+')[0] || 'png';
-        a.download = `edited-image-intensity-${editIntensity}.${extension}`;
+        const extension = mimeType.split('/')[1]?.split('+')[0] || 'png';
+        a.download = `edited-image.${extension}`;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -119,11 +149,11 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
 
         <canvas 
           ref={canvasRef} 
-          className={`w-full h-full object-contain ${appState === AppState.RESULT && editedImage ? 'block' : 'hidden'}`}
+          className={`w-full h-full object-contain ${(appState === AppState.RESULT || appState === AppState.IMAGE_CROPPED) ? 'block' : 'hidden'}`}
           aria-label="Blended edited image"
         />
         
-        {!(appState === AppState.RESULT && editedImage) && (
+        {!(appState === AppState.RESULT || appState === AppState.IMAGE_CROPPED) && (
           <>
             {appState !== AppState.LOADING && !editedImage && !error && <Placeholder />}
             {appState === AppState.ERROR && error && (

@@ -19,4 +19,24 @@ export enum ImageEditModel {
   CREATIVE = 'Creative',
 }
 
-// FIX: The OutputMimeType is not supported for image editing with 'gemini-2.5-flash-image-preview', so the type definition has been removed.
+export enum FilterType {
+  NONE = 'None',
+  VINTAGE = 'Vintage',
+  POLAROID = 'Polaroid',
+  BLACK_WHITE = 'B & W',
+  SEPIA = 'Sepia',
+  NEGATIVE = 'Negative',
+}
+
+export interface HistoryEntry {
+  prompt: string;
+  uncroppedImage: ImageState | null;
+  originalImage: ImageState | null;
+  editedImage: ImageState | null;
+  apiResponseText: string;
+  appState: AppState;
+  error: string | null;
+  model: ImageEditModel;
+  editIntensity: number;
+  filter: FilterType;
+}

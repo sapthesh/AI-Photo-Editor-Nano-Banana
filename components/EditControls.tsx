@@ -2,7 +2,7 @@
 import React from 'react';
 import { MagicWandIcon } from './icons/MagicWandIcon';
 import { ResetIcon } from './icons/ResetIcon';
-import { ImageEditModel } from '../types';
+import { ImageEditModel, FilterType } from '../types';
 
 interface EditControlsProps {
   prompt: string;
@@ -12,6 +12,8 @@ interface EditControlsProps {
   isLoading: boolean;
   model: ImageEditModel;
   setModel: (model: ImageEditModel) => void;
+  filter: FilterType;
+  onFilterChange: (filter: FilterType) => void;
 }
 
 const ModelButton: React.FC<{
@@ -37,12 +39,41 @@ const ModelButton: React.FC<{
   );
 };
 
-export const EditControls: React.FC<EditControlsProps> = ({ prompt, setPrompt, onSubmit, onReset, isLoading, model, setModel }) => {
+const FilterButton: React.FC<{
+  label: FilterType;
+  isActive: boolean;
+  onClick: () => void;
+  disabled: boolean;
+}> = ({ label, isActive, onClick, disabled }) => {
+    const baseClasses = "px-4 py-2 border rounded-lg text-sm font-semibold transition-colors duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50";
+    const activeClasses = "bg-[#A3C9FF] text-[#00315E] border-transparent";
+    const inactiveClasses = "bg-[#111318] border-[#8C919A] text-[#C2C7D1] hover:bg-[#282A2F]";
+
+    return (
+        <button
+            onClick={onClick}
+            disabled={disabled}
+            className={`${baseClasses} ${isActive ? activeClasses : inactiveClasses}`}
+        >
+            {label}
+        </button>
+    );
+};
+
+export const EditControls: React.FC<EditControlsProps> = ({ prompt, setPrompt, onSubmit, onReset, isLoading, model, setModel, filter, onFilterChange }) => {
   const promptSuggestions = [
     'add a small, friendly robot next to the subject',
     'change the background to a futuristic city at night',
     'turn this into a watercolor painting',
     'make the colors more vibrant and saturated',
+    'apply a vintage, sepia-toned photo effect',
+    'make the subject look like a cartoon character',
+    'replace the sky with a starry night',
+    'add a dramatic sun flare in the corner',
+    'change the lighting to golden hour',
+    'make the main subject look like it is made of glass',
+    'add falling snow throughout the image',
+    'apply a double exposure effect with a forest silhouette',
   ];
   
   return (
@@ -67,6 +98,23 @@ export const EditControls: React.FC<EditControlsProps> = ({ prompt, setPrompt, o
             disabled={isLoading}
           />
         </div>
+      </div>
+
+      <div className="mb-6">
+          <label className="block text-base font-medium text-[#C2C7D1] mb-2">
+              Image Filters
+          </label>
+          <div className="flex flex-wrap gap-3">
+              {(Object.values(FilterType)).map((filterType) => (
+                  <FilterButton
+                      key={filterType}
+                      label={filterType}
+                      isActive={filter === filterType}
+                      onClick={() => onFilterChange(filterType)}
+                      disabled={isLoading}
+                  />
+              ))}
+          </div>
       </div>
 
       <div>
