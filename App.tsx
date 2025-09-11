@@ -122,6 +122,20 @@ const App: React.FC = () => {
       setEditIntensity(100);
   }
 
+  const handleContinueEditing = () => {
+    if (!editedImage) return;
+
+    // The edited image becomes the new original
+    setOriginalImage(editedImage);
+  
+    // Reset the rest of the state for the next edit
+    setEditedImage(null);
+    setPrompt('');
+    setApiResponseText('');
+    setAppState(AppState.IMAGE_CROPPED);
+    setEditIntensity(100);
+  };
+
   const renderContent = () => {
     if (appState === AppState.CROPPING && uncroppedImage) {
       return <ImageCropper image={uncroppedImage} onConfirm={handleCropConfirm} onCancel={handleCropCancel} />;
@@ -131,7 +145,7 @@ const App: React.FC = () => {
       return (
         <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
           {/* Left Column: Original Image */}
-          <div className="w-full flex flex-col sticky top-8">
+          <div className="w-full flex flex-col md:sticky top-8">
               <h3 className="text-lg font-medium text-center mb-3 text-[#E2E2E9]">Original</h3>
               <div className="aspect-square w-full bg-[#111318] rounded-xl overflow-hidden flex items-center justify-center relative border border-[#8C919A]/50">
                   <img src={originalImage.dataUrl} alt="Original" className="w-full h-full object-contain" />
@@ -156,6 +170,7 @@ const App: React.FC = () => {
                   error={error}
                   editIntensity={editIntensity}
                   onIntensityChange={setEditIntensity}
+                  onContinueEditing={handleContinueEditing}
               />
               {apiResponseText && (appState === AppState.RESULT || appState === AppState.ERROR && !error) && (
                   <div className="p-4 bg-[#111318] border border-[#8C919A]/50 rounded-lg">
@@ -180,7 +195,7 @@ const App: React.FC = () => {
     <div className="min-h-screen flex flex-col bg-[#111318] text-[#E2E2E9]">
       <Header />
       <main className="flex-grow container mx-auto px-4 py-8 flex flex-col items-center">
-        <div className="w-full max-w-6xl bg-[#1D2025] border border-[#8C919A]/30 rounded-2xl shadow-2xl shadow-black/30 p-6 md:p-8 flex flex-col gap-8">
+        <div className="w-full max-w-6xl bg-[#1D2025] border border-[#8C919A]/30 rounded-2xl shadow-2xl shadow-black/30 p-4 sm:p-6 md:p-8 flex flex-col gap-8">
           {renderContent()}
         </div>
       </main>
