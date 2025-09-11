@@ -1,39 +1,63 @@
-# Nano Banana AI Photo Editor
 
-This is an AI-powered photo editing application that allows users to upload an image, select a region, and describe edits using natural language. It leverages the powerful Google Gemini `gemini-2.5-flash-image-preview` model (also known as Nano Banana) to generate high-quality, context-aware image modifications.
+<!-- @copyright sapthesh -->
+<div align="center">
+  <img src="https://storage.googleapis.com/aistudio-hosting/readme-assets/nano-banana-header.png" alt="Nano Banana AI Photo Editor Banner">
+  <h1 align="center">Nano Banana AI Photo Editor 🍌✨</h1>
+</div>
 
-The user interface is designed to be modern, intuitive, and responsive, following Google's Material 3 design principles.
+<div align="center">
+  <!-- Dynamic Badges -->
+  <a href="https://github.com/sapthesh/AI-Photo-Editor-Nano-Banana/stargazers">
+    <img src="https://img.shields.io/github/stars/sapthesh/AI-Photo-Editor-Nano-Banana?style=for-the-badge&logo=github&color=b491ff&logoColor=white" alt="Stars">
+  </a>
+  <a href="https://github.com/sapthesh/AI-Photo-Editor-Nano-Banana/network/members">
+    <img src="https://img.shields.io/github/forks/sapthesh/AI-Photo-Editor-Nano-Banana?style=for-the-badge&logo=github&color=89c4f4&logoColor=white" alt="Forks">
+  </a>
+  <img src="https://img.shields.io/github/repo-size/sapthesh/AI-Photo-Editor-Nano-Banana?style=for-the-badge&logo=github&color=ff69b4&logoColor=white" alt="Repo Size">
+  <img src="https://img.shields.io/github/last-commit/sapthesh/AI-Photo-Editor-Nano-Banana?style=for-the-badge&logo=github&color=f4d03f&logoColor=white" alt="Last Commit">
+</div>
 
-## Features
+<br>
 
-- **Image Upload:** Supports drag-and-drop and file selection for uploading images (PNG, JPG, WEBP, etc.). Includes a real-time progress indicator for large files.
-- **Image Cropping:** A core feature that allows users to select a specific region of the image to edit, ensuring the AI's focus is precise.
-- **AI-Powered Editing:** Users can describe complex edits in plain English (e.g., "add a hat to the person," "change the background to a beach").
-- **Selectable Editing Styles:** Choose between a "Standard" model for reliable edits or a "Creative" model for more artistic and dramatic results.
-- **Edit Intensity Control:** A post-processing slider allows users to blend the original and edited images, giving fine-grained control over the final effect's strength.
-- **Download Image:** Easily download the final edited image, including any intensity adjustments.
-- **Responsive UI:** The application is fully responsive and works seamlessly on both desktop and mobile devices.
-- **Clear User Feedback:** Provides clear loading states, progress indicators, and descriptive error messages to guide the user.
+Welcome to the **Nano Banana AI Photo Editor**! This powerful web application allows you to transform your photos with simple text prompts. Just upload an image, select a region, and describe your vision in natural language. Powered by the Google Gemini `gemini-2.5-flash-image-preview` model, it brings your creative ideas to life with stunning, context-aware edits.
 
-## How to Use
+<br>
 
-1.  **Upload an Image:** Drag and drop an image file onto the upload area or click to select a file from your device.
-2.  **Crop Your Image:** An interactive cropping tool will appear. Adjust the selection box to frame the exact area you want the AI to edit. Click "Confirm Selection".
-3.  **Choose Editing Style:** Select either "Standard" or "Creative" to match your desired outcome.
-4.  **Describe Your Edit:** In the text area, type a clear and descriptive prompt for the changes you want to make.
-5.  **Apply Edit:** Click the "Apply Edit" button to send your request to the Gemini API. A loading indicator will show while the AI processes the image.
-6.  **View and Adjust:** The edited image will appear. Use the "Edit Intensity" slider to blend the result with the original image until you're satisfied.
-7.  **Download:** Click the "Download Edited Image" button to save the final result to your device.
-8.  **Start Over:** Use the "Start Over" button at any time to clear the current image and begin a new edit.
+<div align="center">
+  <img src="https://storage.googleapis.com/aistudio-hosting/readme-assets/nano-banana-screenshot.png" alt="AI Photo Editor Screenshot" width="800">
+</div>
 
-## Technology Stack
+## ✨ Features
 
-- **Frontend:** React, TypeScript
-- **AI Model:** Google Gemini (`gemini-2.5-flash-image-preview`) via the `@google/genai` SDK
-- **Styling:** Tailwind CSS for a utility-first, modern design system aligned with Material 3 principles.
-- **Image Cropping:** `react-image-crop` library for the interactive cropping UI.
+-   🎨 **AI-Powered Editing:** Describe complex edits in plain English (e.g., "add a hat to the person," "change the background to a beach").
+-   ✂️ **Precision Cropping:** A core feature to select the exact region you want to edit, ensuring the AI's focus is precise.
+-   🚀 **Selectable Editing Styles:** Choose between a **Standard** model for reliable edits or a **Creative** model for more artistic results.
+-   🎚️ **Edit Intensity Control:** Fine-tune the strength of the AI's changes with a post-processing slider to blend the original and edited images.
+-   📤 **Easy Image Upload:** Drag-and-drop or file selection with a real-time progress indicator for large files.
+-   💾 **Download Final Image:** Easily download the final edited image, including any intensity adjustments.
+-   📱 **Fully Responsive:** Works beautifully on both desktop and mobile devices.
+-   💡 **Intuitive UI:** A clean, modern interface built with Material 3 principles, providing clear loading states and error messages.
 
-## File Structure
+## 🚀 How to Use
+
+1.  **Upload an Image:** Drag and drop an image or click to select a file.
+2.  **Crop Your Image:** Adjust the selection box to frame the area you want to edit, then click "Confirm Selection".
+3.  **Choose a Style:** Select "Standard" or "Creative" for your desired outcome.
+4.  **Describe Your Edit:** Type a clear prompt in the text area.
+5.  **Apply Magic:** Click "Apply Edit" and watch the AI work!
+6.  **Adjust & Refine:** Use the "Edit Intensity" slider to get the perfect blend.
+7.  **Download:** Click "Download Edited Image" to save your creation.
+8.  **Reset:** Use the "Start Over" button to begin a new project.
+
+## 💻 Technology Stack
+
+-   **Frontend:** React, TypeScript
+-   **AI Model:** Google Gemini (`gemini-2.5-flash-image-preview`)
+-   **SDK:** `@google/genai`
+-   **Styling:** Tailwind CSS (following Material 3 principles)
+-   **Image Cropping:** `react-image-crop`
+
+## 📁 File Structure
 
 The project is organized with a clear and maintainable structure:
 
@@ -46,24 +70,21 @@ The project is organized with a clear and maintainable structure:
 ├── services/
 │   └── geminiService.ts    # Handles all communication with the Gemini API
 └── components/
-    ├── EditControls.tsx    # UI for prompt input, model selection, and action buttons
-    ├── Footer.tsx          # Application footer
-    ├── Header.tsx          # Application header
+    ├── EditControls.tsx    # UI for prompt input, model selection, etc.
     ├── ImageCropper.tsx    # Cropping component and logic
     ├── ImageUploader.tsx   # Component for uploading images
-    ├── ImageViewer.tsx     # Displays the edited image, intensity slider, and download button
-    ├── Spinner.tsx         # Loading spinner component
-    └── icons/              # SVG icon components
+    ├── ImageViewer.tsx     # Displays the final image, slider, and download button
+    └── ...and more
 ```
 
-## Local Development
+## 🛠️ Local Development
 
 To run this project locally, follow these steps:
 
 1.  **Clone the repository:**
     ```bash
-    git clone <repository-url>
-    cd <repository-directory>
+    git clone https://github.com/sapthesh/AI-Photo-Editor-Nano-Banana.git
+    cd AI-Photo-Editor-Nano-Banana
     ```
 
 2.  **Install dependencies:**
@@ -76,7 +97,7 @@ To run this project locally, follow these steps:
     ```
     API_KEY="YOUR_GEMINI_API_KEY"
     ```
-    *Note: In the development environment this project is intended for, this key is pre-configured and does not need to be set manually.*
+    > **Note:** In the intended development environment (like Google AI Studio), this key is pre-configured and does not need to be set manually.
 
 4.  **Run the development server:**
     ```bash
@@ -86,4 +107,4 @@ To run this project locally, follow these steps:
 This will start the application, and you can access it in your browser at the local address provided.
 
 ---
-© 2025 sapthesh
+© sapthesh
