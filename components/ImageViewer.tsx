@@ -5,6 +5,7 @@ import { Spinner } from './Spinner';
 import { AlertTriangleIcon } from './icons/AlertTriangleIcon';
 import { ImageIcon } from './icons/ImageIcon';
 import { DownloadIcon } from './icons/DownloadIcon';
+import { CycleIcon } from './icons/CycleIcon';
 
 interface ImageViewerProps {
   originalImage: string | null;
@@ -13,6 +14,7 @@ interface ImageViewerProps {
   error: string | null;
   editIntensity: number;
   onIntensityChange: (intensity: number) => void;
+  onContinueEditing: () => void;
 }
 
 const ImagePanel: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
@@ -37,7 +39,8 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
     appState, 
     error, 
     editIntensity,
-    onIntensityChange 
+    onIntensityChange,
+    onContinueEditing
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -150,15 +153,27 @@ export const ImageViewer: React.FC<ImageViewerProps> = ({
                       onChange={(e) => onIntensityChange(Number(e.target.value))}
                       className="w-full h-2 bg-[#111318] rounded-lg appearance-none cursor-pointer [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-4 [&::-webkit-slider-thumb]:w-4 [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#A3C9FF] [&::-moz-range-thumb]:h-4 [&::-moz-range-thumb]:w-4 [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-[#A3C9FF] [&::-moz-range-thumb]:border-none"
                       aria-label="Edit intensity slider"
+                      title={`Current intensity: ${editIntensity}%`}
                   />
               </div>
-              <button
-                  onClick={handleDownload}
-                  className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-semibold rounded-full shadow-sm text-[#A3C9FF] bg-[#004884]/40 hover:bg-[#004884]/60 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#1D2025] focus:ring-[#A3C9FF] transition-colors"
-              >
-                  <DownloadIcon className="w-5 h-5 mr-2" />
-                  Download Edited Image
-              </button>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <button
+                      onClick={onContinueEditing}
+                      title="Use this edited image as the new original for further edits"
+                      className="inline-flex items-center justify-center px-6 py-3 border border-[#8C919A] text-sm font-semibold rounded-full text-[#A3C9FF] hover:bg-[#A3C9FF]/10 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#1D2025] focus:ring-[#A3C9FF] transition-colors"
+                  >
+                      <CycleIcon className="w-5 h-5 mr-2" />
+                      Continue Editing
+                  </button>
+                  <button
+                      onClick={handleDownload}
+                      title="Download the final edited image"
+                      className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-sm font-semibold rounded-full shadow-sm text-[#00315E] bg-[#A3C9FF] hover:bg-opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-[#1D2025] focus:ring-[#A3C9FF] transition-colors"
+                  >
+                      <DownloadIcon className="w-5 h-5 mr-2" />
+                      Download Image
+                  </button>
+              </div>
           </div>
       )}
     </div>

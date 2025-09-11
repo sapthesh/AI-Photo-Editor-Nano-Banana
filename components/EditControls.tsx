@@ -38,6 +38,13 @@ const ModelButton: React.FC<{
 };
 
 export const EditControls: React.FC<EditControlsProps> = ({ prompt, setPrompt, onSubmit, onReset, isLoading, model, setModel }) => {
+  const promptSuggestions = [
+    'add a small, friendly robot next to the subject',
+    'change the background to a futuristic city at night',
+    'turn this into a watercolor painting',
+    'make the colors more vibrant and saturated',
+  ];
+  
   return (
     <div className="w-full">
       <div className="mb-6">
@@ -75,6 +82,22 @@ export const EditControls: React.FC<EditControlsProps> = ({ prompt, setPrompt, o
           onChange={(e) => setPrompt(e.target.value)}
           disabled={isLoading}
         />
+      </div>
+
+      <div className="mt-4">
+          <p className="text-sm font-medium text-[#C2C7D1] mb-2">Need inspiration?</p>
+          <div className="flex flex-wrap gap-2">
+              {promptSuggestions.map((suggestion, index) => (
+                  <button
+                      key={index}
+                      onClick={() => setPrompt(suggestion)}
+                      disabled={isLoading}
+                      className="px-3 py-1.5 text-xs font-medium text-[#C2C7D1] bg-[#111318] border border-[#8C919A] rounded-full hover:bg-[#282A2F] hover:border-[#A3C9FF] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                      {suggestion}
+                  </button>
+              ))}
+          </div>
       </div>
 
       <div className="mt-6 flex flex-col sm:flex-row gap-4">

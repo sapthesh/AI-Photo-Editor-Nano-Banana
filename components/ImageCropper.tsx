@@ -55,6 +55,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({ image, onConfirm, on
     const [crop, setCrop] = useState<Crop>();
     const [completedCrop, setCompletedCrop] = useState<PixelCrop>();
     const imgRef = useRef<HTMLImageElement>(null);
+    const [aspect, setAspect] = useState<number | undefined>(1);
 
     function onImageLoad(e: React.SyntheticEvent<HTMLImageElement>) {
         const { width, height } = e.currentTarget;
@@ -66,7 +67,7 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({ image, onConfirm, on
                     unit: 'px',
                     width: width * 0.9,
                 },
-                1, // 1:1 aspect ratio
+                aspect, // Use aspect from state
                 width,
                 height
             ),
@@ -92,18 +93,45 @@ export const ImageCropper: React.FC<ImageCropperProps> = ({ image, onConfirm, on
         }
     };
     
+    const aspectRatios = [
+      { label: '1:1', value: 1 },
+      { label: '4:3', value: 4 / 3 },
+      { label: '16:9', value: 16 / 9 },
+      { label: 'Free', value: undefined },
+    ];
+
     return (
         <div className="w-full flex flex-col items-center gap-6">
             <h2 className="text-xl font-medium text-[#E2E2E9]">Crop your image</h2>
             <p className="text-[#C2C7D1] text-center max-w-lg">
                 Select the region you want to edit. The AI will focus its changes on this specific area.
             </p>
+
+            <div className="w-full flex flex-col items-center gap-3">
+                <label className="text-sm font-medium text-[#C2C7D1]">Aspect Ratio</label>
+                <div className="flex flex-wrap justify-center gap-3">
+                    {aspectRatios.map(({ label, value }) => (
+                        <button
+                            key={label}
+                            onClick={() => setAspect(value)}
+                            className={`px-4 py-1.5 text-sm font-semibold rounded-full border transition-colors duration-200 ${
+                                aspect === value
+                                    ? 'bg-[#A3C9FF] text-[#00315E] border-transparent'
+                                    : 'bg-transparent text-[#A3C9FF] border-[#8C919A] hover:border-[#A3C9FF] hover:bg-[#A3C9FF]/10'
+                            }`}
+                        >
+                            {label}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
             <div className="max-w-full max-h-[60vh] overflow-hidden rounded-lg bg-black/50 flex justify-center items-center">
                 <ReactCrop
                     crop={crop}
                     onChange={c => setCrop(c)}
                     onComplete={c => setCompletedCrop(c)}
-                    aspect={1}
+                    aspect={aspect}
                     minWidth={100}
                     minHeight={100}
                 >
