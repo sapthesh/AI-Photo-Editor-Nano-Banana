@@ -25,7 +25,7 @@ Welcome to the **Nano Banana AI Photo Editor**! This powerful web application al
 <br>
 
 <div align="center">
-  <img src="https://storage.googleapis.com/gweb-aistudio-template-assets/nano-banana-screenshot-v2.png" alt="AI Photo Editor Screenshot" width="800">
+  <img src="screenshot.jpg" alt="AI Photo Editor - Nano Banana" width="800">
 </div>
 
 ## ✨ Features
